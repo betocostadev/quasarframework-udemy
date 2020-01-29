@@ -37,7 +37,7 @@
 		  	<button @click="generateRandomPerson">Generate Random Person</button>
 		  </div>
   	</div>
-  	<div v-if="name.length > 0 && age > 0" class="description q-mb-lg">
+  	<div v-if="name && age" class="description q-mb-lg">
   		<p>My name is <b>{{ name }}</b> and I'm <b>{{ age }}</b> years old.</p>
   		<p>In 10 years I will be <b>{{ agePlusTen }} </b>.</p>
   		<p>My name is <b>{{ charsInName }}</b> characters long.</p>
@@ -50,14 +50,14 @@
 </template>
 
 <script>
-	const randomNames = [
-		'Beto', 'Alex', 'Alexandre', 'João', 'Luiz', 'Fernando', 'Suelen', 'Rebeca', 'Cintia'
-	]
 	export default {
 		data() {
 			return {
 				name: '',
-				age: 0
+				age: 0,
+				randomNames: [
+					'Beto', 'Alex', 'Alexandre', 'João', 'Luiz', 'Fernando', 'Suelen', 'Rebeca', 'Cintia'
+				]
 			}
 		},
 		computed: {
@@ -70,8 +70,8 @@
 		},
 		methods: {
 			generateRandomPerson() {
-				return this.name = randomNames[Math.floor(Math.random() * Math.floor(randomNames.length))],
-								this.age = Math.floor(Math.random() * Math.floor(100))
+				this.name = this.randomNames[Math.floor(Math.random() * this.randomNames.length)]
+				this.age = Math.floor(Math.random() * Math.floor(100))
 			}
 		},
 		filters: {
