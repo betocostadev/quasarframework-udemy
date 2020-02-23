@@ -2,6 +2,8 @@
 
 A Quasar Framework app
 
+Based on the Quasar Framework from Udemy
+
 ## Install the dependencies
 ```bash
 npm install
