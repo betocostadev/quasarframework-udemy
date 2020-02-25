@@ -1,32 +1,32 @@
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header elevated>
+    <q-header elevated class="bg-indigo">
       <q-toolbar>
-        <!-- <q-btn
+        <q-btn
           flat
           dense
           round
           @click="leftDrawerOpen = !leftDrawerOpen"
           icon="menu"
           aria-label="Menu"
-        /> -->
+        />
 
         <q-toolbar-title class="absolute-center">
           Awesome To-Do
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
       v-model="leftDrawerOpen"
       :breakpoint="767"
+      :width="220"
       show-if-above
       bordered
-      content-class="bg-grey-2"
+      content-class="bg-indigo-6"
     >
-      <q-list>
+      <q-list dark>
         <q-item-label header>Navigation</q-item-label>
         <q-item
           v-for="nav in navs"
@@ -89,10 +89,13 @@ export default {
 }
 </script>
 
-<style>
-  @media screen and (min-width: 768px) {
-    .q-footer {
-      display: none;
-    }
-  }
+<style lang="stylus">
+  @media screen and (min-width: 768px)
+    .q-footer
+      display: none
+
+  .q-drawer
+    .q-router-link--exact-active
+      color: $amber-cust
+
 </style>

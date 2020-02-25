@@ -9,3 +9,8 @@ export default {
   name: 'App'
 }
 </script>
+
+<style lang="stylus">
+  .text-strikethrough
+    text-decoration line-through
+</style>
