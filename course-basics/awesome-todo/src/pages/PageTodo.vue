@@ -20,7 +20,7 @@
     </div>
 
     <q-dialog v-model="showAddTask">
-      <addtask-modal></addtask-modal>
+      <addtask-modal @close="showAddTask = false"></addtask-modal>
     </q-dialog>
 
   </q-page>
@@ -31,7 +31,7 @@
 export default {
   data() {
     return {
-      showAddTask: true
+      showAddTask: false
     }
   },
   computed: {
