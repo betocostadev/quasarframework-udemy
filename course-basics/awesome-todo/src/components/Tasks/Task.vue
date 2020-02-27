@@ -28,6 +28,7 @@
       <div class="row">
         <div class="column justify-center">
           <q-icon
+            v-if="task.dueDate"
             color="secondary"
             name="event"
             size="18px"

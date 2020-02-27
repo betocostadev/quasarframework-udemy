@@ -1,38 +1,19 @@
 <template>
   <q-card>
-    <q-card-section class="row">
-      <div class="text-h6">Add Task</div>
-      <q-space />
-      <q-btn v-close-popup flat round dense color="negative" icon="close" />
-    </q-card-section>
+
+    <modal-header>Add Task</modal-header>
 
     <q-form
       @submit.prevent="submitForm"
       class="q-gutter-md">
 
       <q-card-section class="q-pt-none">
-        <div class="row">
-          <q-input
-            autofocus
-            outlined
-            v-model="taskToSubmit.name"
-            :rules="[val => !!val || 'Field is required']"
-            ref="name"
-            label="TASK"
-            class="col"/>
-        </div>
+        <!-- .sync is used because we are emitting from the component -->
+        <modal-task-name :name.sync="taskToSubmit.name" />
+        <modal-task-date :dueDate.sync="taskToSubmit.dueDate" />
 
-        <q-input outlined v-model="taskToSubmit.dueDate" mask="date" label="Due date">
-          <template v-slot:append>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="taskToSubmit.dueDate" @input="() => $refs.qDateProxy.hide()" />
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
 
-        <q-input outlined v-model="taskToSubmit.dueTime" mask="time" label="Due time">
+        <q-input v-if="taskToSubmit.dueDate" outlined v-model="taskToSubmit.dueTime" mask="time" label="Due time">
           <template v-slot:append>
             <q-icon name="access_time" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -68,6 +49,11 @@ export default {
         completed: false,
       }
     }
+  },
+  components: {
+    'modal-header': require('../Shared/ModalHeader').default,
+    'modal-task-name': require('../Shared/ModalTaskName').default,
+    'modal-task-date': require('../Shared/ModalTaskDate').default
   },
   methods: {
     // The ref called name was place inside the QInput for the task name

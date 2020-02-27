@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-list bordered separator>
+    <q-list v-if="Object.keys(tasks).length" bordered separator>
       <task
         v-for="(task, key) in tasks"
         :key="key"
@@ -8,6 +8,7 @@
         :id="key">
       </task>
     </q-list>
+    <h2 v-else>Nothing to do :(</h2>
 
     <div class="absolute-bottom text-center q-mb-lg">
       <q-btn
@@ -31,7 +32,7 @@
 export default {
   data() {
     return {
-      showAddTask: false
+      showAddTask: true
     }
   },
   computed: {
@@ -42,7 +43,7 @@ export default {
     ...mapGetters('tasks', ['tasks'])
   },
   components: {
-    'task' : require('../components/Tasks/Task').default,
+    'task': require('../components/Tasks/Task').default,
     'addtask-modal': require('../components/Modals/AddTask').default
   }
   // methods: {
