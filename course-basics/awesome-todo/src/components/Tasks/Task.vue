@@ -20,7 +20,7 @@
       >{{task.name}}
       </q-item-label>
       <q-item-label caption>
-        {{task.comment}}
+        {{task.note}}
       </q-item-label>
     </q-item-section>
 
@@ -53,15 +53,32 @@
     </q-item-section>
 
     <q-item-section side>
-      <!-- Using .stop to stop propagation and don't trigger the click event of the task -->
-      <q-btn
-        @click.stop="promptToDelete(id)"
-        flat
-        round
-        dense
-        color="negative"
-        icon="delete_forever" />
+      <div class="row">
+        <q-btn
+          @click.stop="showEditTask = true"
+          flat
+          round
+          dense
+          color="primary"
+          icon="edit" />
+        <!-- Using .stop to stop propagation and don't trigger the click event of the task -->
+        <q-btn
+          @click.stop="promptToDelete(id)"
+          flat
+          round
+          dense
+          color="negative"
+          icon="delete_forever" />
+      </div>
     </q-item-section>
+
+    <q-dialog v-model="showEditTask">
+      <edit-task
+        @close="showEditTask = false"
+        :task="task"
+        :id="id">
+      </edit-task>
+    </q-dialog>
 
   </q-item>
       <!-- <q-separator spaced /> -->
@@ -72,9 +89,15 @@
 import { mapActions } from "vuex"
 
 export default {
-  props: [
-    'task', 'id'
-  ],
+  props: ['task', 'id'],
+  data() {
+    return {
+      showEditTask: false
+    }
+  },
+  components: {
+    'edit-task': require('../Modals/EditTask').default
+  },
   methods: {
     ...mapActions('tasks', ['updateTask', 'deleteTask']),
     promptToDelete(id) {
