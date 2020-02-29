@@ -1,7 +1,7 @@
 <template>
   <q-card>
 
-    <modal-header>Add Task</modal-header>
+    <modal-header>Edit Task</modal-header>
 
     <q-form
       @submit.prevent="submitForm"
@@ -33,15 +33,10 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  props: ['task', 'id'],
   data() {
     return {
-      taskToSubmit: {
-        name: '',
-        note: '',
-        dueDate: '',
-        dueTime: '',
-        completed: false,
-      }
+      taskToSubmit: { }
     }
   },
   components: {
@@ -53,8 +48,8 @@ export default {
     'modal-buttons': require('../Shared/ModalButtons').default
   },
   methods: {
-    // The ref called name was placed inside the QInput for the task name
-    ...mapActions('tasks', ['addTask']),
+    // The ref called name was place inside the QInput for the task name
+    ...mapActions('tasks', ['updateTask']),
 
     submitForm() {
       // console.log(this.$refs.name)
@@ -63,11 +58,17 @@ export default {
         this.submitTask()
       }
     },
-    submitTask(e) {
+    submitTask() {
       // Triggers the addTask action that calls for the add task mutation
-      this.addTask(this.taskToSubmit)
+      this.updateTask({
+        id: this.id,
+        updates: this.taskToSubmit
+      })
       this.$emit('close')
     }
+  },
+  mounted() {
+    this.taskToSubmit = Object.assign({}, this.task)
   }
 }
 </script>
