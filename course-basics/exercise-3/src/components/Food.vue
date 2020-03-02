@@ -1,5 +1,5 @@
 <template>
-	<q-card 
+	<q-card
 		class="card">
     <q-img
       :src="food.imageUrl"
@@ -34,12 +34,13 @@
       	color="blue"
       	flat>Edit</q-btn>
       <q-btn
+				@click="promptToDelete(id)"
       	icon="delete"
       	color="red"
       	flat>Delete</q-btn>
     </q-card-actions>
 
-    <q-dialog 
+    <q-dialog
     	v-model="showEditFoodModal">
       <modal-add-edit-food type="edit" />
     </q-dialog>
@@ -47,8 +48,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
 	export default {
-		props: ['food'],
+		props: ['food', 'id'],
 		data() {
 			return {
 				showEditFoodModal: false
@@ -56,6 +58,26 @@
 		},
 		components: {
 			'modal-add-edit-food' : require('components/ModalAddEditFood.vue').default
+		},
+		methods: {
+			...mapActions('foods', ['deleteFood']),
+			promptToDelete(id) {
+				this.$q.dialog({
+					title: 'Confirm',
+					message: 'Do you really want to delete this food item?',
+					ok: {
+						push: true,
+						color: 'negative'
+					},
+					cancel: {
+						push: true,
+						color: 'info'
+					},
+					persistent: true,
+				}).onOk(() => {
+					this.deleteFood(id)
+				})
+			}
 		}
 	}
 </script>

@@ -55,7 +55,7 @@
 			      color="orange" />
 				</div>
     	</div>
-    	
+
     </q-card-section>
 
     <q-card-actions align="right">
