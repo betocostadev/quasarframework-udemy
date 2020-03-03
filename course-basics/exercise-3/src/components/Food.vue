@@ -2,7 +2,7 @@
 	<q-card
 		class="card">
     <q-img
-      :src="food.imageUrl"
+      :src="food.imageUrl ? food.imageUrl : 'statics/image-placeholder.png'"
       basic
       contain
     >
@@ -22,7 +22,8 @@
     </q-card-section>
 
     <q-card-section>
-      {{ food.description }}
+			<span v-if="food.description">{{ food.description }}</span>
+			<span v-else><em>No description provided.</em></span>
     </q-card-section>
 
     <q-card-actions
@@ -34,7 +35,7 @@
       	color="blue"
       	flat>Edit</q-btn>
       <q-btn
-				@click="promptToDelete(id)"
+				@click="promptToDelete()"
       	icon="delete"
       	color="red"
       	flat>Delete</q-btn>
@@ -42,7 +43,10 @@
 
     <q-dialog
     	v-model="showEditFoodModal">
-      <modal-add-edit-food type="edit" />
+      <modal-add-edit-food
+				type="edit"
+      	:food="food"
+      	@close="showEditFoodModal = false" />
     </q-dialog>
   </q-card>
 </template>
@@ -50,7 +54,7 @@
 <script>
 import { mapActions } from "vuex"
 	export default {
-		props: ['food', 'id'],
+		props: ['food'],
 		data() {
 			return {
 				showEditFoodModal: false
@@ -61,7 +65,7 @@ import { mapActions } from "vuex"
 		},
 		methods: {
 			...mapActions('foods', ['deleteFood']),
-			promptToDelete(id) {
+			promptToDelete() {
 				this.$q.dialog({
 					title: 'Confirm',
 					message: 'Do you really want to delete this food item?',
@@ -72,11 +76,10 @@ import { mapActions } from "vuex"
 					cancel: {
 						push: true,
 						color: 'info'
-					},
-					persistent: true,
-				}).onOk(() => {
-					this.deleteFood(id)
-				})
+					}
+	      }).onOk(() => {
+	       	this.deleteFood(this.food.id)
+	      })
 			}
 		}
 	}

@@ -14,7 +14,7 @@
 					]"
 	      	filled
 	      	v-model="foodToSubmit.name"
-					ref="foodName"
+					ref="name"
 	      	label="Name (e.g. Burger)"
 	      	class="col" />
     	</div>
@@ -25,7 +25,7 @@
 					val => val.length < 136 || 'Max 135 characters']"
 		      filled
 		      v-model="foodToSubmit.description"
-					ref="foodDescription"
+					ref="description"
 		      label="Description"
 		      type="textarea"
 		      class="col" />
@@ -73,6 +73,7 @@
 
 <script>
 import { mapActions } from "vuex"
+
 	export default {
 		props: ['type', 'food'],
 		data() {
@@ -86,22 +87,22 @@ import { mapActions } from "vuex"
 			}
 		},
 		methods: {
-			...mapActions('foods', ['addFood', 'editFood']),
+			...mapActions('foods', ['addFood', 'updateFood']),
 			submitForm() {
-				this.$refs.foodName.validate()
-				this.$refs.foodDescription.validate()
+				this.$refs.name.validate()
+				this.$refs.description.validate()
 
-				if (!this.$refs.foodName.hasError && !this.$refs.foodDescription.hasError) {
+				if (!this.$refs.name.hasError && !this.$refs.description.hasError) {
+					this.$emit('close')
 					this.submitFood()
 				}
 			},
 			submitFood() {
-				if (this.type === 'add') {
-					console.log(this.type)
+				if (this.type == 'add') {
 					this.addFood(this.foodToSubmit)
-				} else {
-					console.log(this.type)
-					this.editFood(this.foodToSubmit)
+				}
+				else {
+					this.updateFood(this.foodToSubmit)
 				}
 			}
 		},
