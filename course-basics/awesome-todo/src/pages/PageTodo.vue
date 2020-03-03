@@ -1,14 +1,8 @@
 <template>
   <q-page class="q-pa-md">
-    <q-list v-if="Object.keys(tasks).length" bordered separator>
-      <task
-        v-for="(task, key) in tasks"
-        :key="key"
-        :task="task"
-        :id="key">
-      </task>
-    </q-list>
-    <h2 v-else>Nothing to do :(</h2>
+    <tasks-todo :tasksTodo="tasksTodo" />
+
+    <tasks-completed :tasksCompleted="tasksCompleted" />
 
     <div class="absolute-bottom text-center q-mb-lg">
       <q-btn
@@ -40,11 +34,12 @@ export default {
     tasks() {
       this.$store.getters['tasks/tasks']
     } */
-    ...mapGetters('tasks', ['tasks'])
+    ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted'])
   },
   components: {
-    'task': require('../components/Tasks/Task').default,
-    'addtask-modal': require('../components/Modals/AddTask').default
+    'addtask-modal': require('../components/Modals/AddTask').default,
+    'tasks-todo': require('../components/Tasks/TasksTodo').default,
+    'tasks-completed': require('../components/Tasks/TasksCompleted').default
   }
   // methods: {
   //   taskComplete () {

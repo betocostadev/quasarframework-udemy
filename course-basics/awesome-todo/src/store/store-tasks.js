@@ -7,20 +7,27 @@ import { uid } from 'quasar'
 // Firebase will create objects inside objects inside objects...
 const state = {
   tasks: {
-    // 'ID1': {
-    //   name: 'Quasar Section 6',
-    //   comment: 'Complete it today',
-    //   completed: false,
-    //   dueDate: '2020/02/25',
-    //   dueTime: '9:30'
-    // },
-    // 'ID2': {
-    //   name: 'Quasar Section 7',
-    //   comment: 'Complete it today',
-    //   completed: false,
-    //   dueDate: '2020/02/25',
-    //   dueTime: '12:00'
-    // },
+    'ID1': {
+      name: 'Quasar Video 75',
+      comment: 'Complete it today',
+      completed: false,
+      dueDate: '2020/03/03',
+      dueTime: '18:00'
+    },
+    'ID2': {
+      name: 'Quasar Video 76',
+      comment: 'Complete it today',
+      completed: false,
+      dueDate: '2020/03/03',
+      dueTime: '18:00'
+    },
+    'ID3': {
+      name: 'Complete Scrimba Vuex',
+      comment: 'Complete it today',
+      completed: true,
+      dueDate: '2020/03/03',
+      dueTime: '18:00'
+    },
   }
 }
 
@@ -57,8 +64,26 @@ const actions = {
 }
 
 const getters = {
-  tasks: (state) => {
-    return state.tasks
+  tasksTodo: (state) => {
+    let tasks = { }
+    Object.keys(state.tasks).forEach((key) => {
+      let task = state.tasks[key]
+      // console.log('task:', task)
+      if (!task.completed) {
+        tasks[key] = task
+      }
+    })
+    return tasks
+  },
+  tasksCompleted: (state) => {
+    let tasks = { }
+    Object.keys(state.tasks).forEach((key) => {
+      let task = state.tasks[key]
+      if (task.completed) {
+        tasks[key] = task
+      }
+    })
+    return tasks
   }
 }
 
