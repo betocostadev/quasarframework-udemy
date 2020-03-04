@@ -3,6 +3,7 @@
 
     <div class="row">
       <search />
+      <sort />
     </div>
 
     <p
@@ -57,7 +58,8 @@ export default {
     'tasks-todo': require('../components/Tasks/TasksTodo').default,
     'tasks-completed': require('../components/Tasks/TasksCompleted').default,
     'no-tasks': require('../components/Tasks/Modals/NoTasks').default,
-    'search': require('../components/Tasks/Tools/Search').default
+    'search': require('../components/Tasks/Tools/Search').default,
+    'sort': require('../components/Tasks/Tools/Sort').default
   },
   mounted() {
     // Using the $root.$emit on the no-tasks component to use the code below

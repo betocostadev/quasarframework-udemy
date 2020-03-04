@@ -9,35 +9,34 @@ const state = {
   tasks: {
     'ID1': {
       name: 'Quasar Video 91',
-      comment: 'Completed',
+      note: 'Completed',
       completed: true,
       dueDate: '2020/03/03',
       dueTime: '18:00'
     },
     'ID2': {
       name: 'Quasar Video 93',
-      comment: 'Complete it today',
+      note: 'Complete it today',
       completed: false,
       dueDate: '2020/03/03',
       dueTime: '18:00'
     },
     'ID3': {
       name: 'Complete Scrimba Vuex',
-      comment: 'Gone for good',
+      note: 'Gone for good',
       completed: true,
       dueDate: '2020/03/03',
       dueTime: '18:00'
     },
     'ID4': {
       name: 'Act of fight',
-      comment: 'Gone for good',
+      note: 'Gone for good',
       completed: false,
       dueDate: '2020/03/03',
       dueTime: '18:00'
     }
   },
   search: '',
-
   sort: 'name'
 }
 
@@ -55,6 +54,10 @@ const mutations = {
 
   setSearch(state, value) {
     state.search = value
+  },
+
+  setSort(state, value) {
+    state.sort = value
   }
 }
 
@@ -78,6 +81,10 @@ const actions = {
 
   setSearch({ commit }, value) {
     commit('setSearch', value)
+  },
+
+  setSort({ commit }, value) {
+    commit('setSort', value)
   }
 }
 
@@ -111,7 +118,7 @@ const getters = {
     if (state.search) {
       Object.keys(tasksSorted).forEach((key) => {
         let task = tasksSorted[key]
-        if (task.name.toLowerCase().includes(state.search.toLowerCase()) || task.comment.toLowerCase().includes(state.search.toLowerCase())) {
+        if (task.name.toLowerCase().includes(state.search.toLowerCase()) || task.note.toLowerCase().includes(state.search.toLowerCase())) {
           tasksFiltered[key] = task
         }
       })
