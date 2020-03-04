@@ -8,14 +8,14 @@ import { uid } from 'quasar'
 const state = {
   tasks: {
     'ID1': {
-      name: 'Quasar Video 75',
-      comment: 'Complete it today',
-      completed: false,
+      name: 'Quasar Video 91',
+      comment: 'Completed',
+      completed: true,
       dueDate: '2020/03/03',
       dueTime: '18:00'
     },
     'ID2': {
-      name: 'Quasar Video 76',
+      name: 'Quasar Video 93',
       comment: 'Complete it today',
       completed: false,
       dueDate: '2020/03/03',
@@ -23,13 +23,22 @@ const state = {
     },
     'ID3': {
       name: 'Complete Scrimba Vuex',
-      comment: 'Complete it today',
+      comment: 'Gone for good',
       completed: true,
+      dueDate: '2020/03/03',
+      dueTime: '18:00'
+    },
+    'ID4': {
+      name: 'Act of fight',
+      comment: 'Gone for good',
+      completed: false,
       dueDate: '2020/03/03',
       dueTime: '18:00'
     }
   },
-  search: ''
+  search: '',
+
+  sort: 'name'
 }
 
 const mutations = {
@@ -73,19 +82,42 @@ const actions = {
 }
 
 const getters = {
+  tasksSorted: (state) => {
+    let tasksSorted = {},
+        keysOrdered = Object.keys(state.tasks)
+
+    keysOrdered.sort((a, b) => {
+      let taskAProp = state.tasks[a][state.sort].toLowerCase(),
+          taskBProp = state.tasks[b][state.sort].toLowerCase()
+
+      if (taskAProp > taskBProp) return 1
+      else if (taskAProp < taskBProp) return -1
+      else return 0
+    })
+    // console.log('keysOrdered', keysOrdered)
+
+    keysOrdered.forEach((key) => {
+      tasksSorted[key] = state.tasks[key]
+    })
+    console.log('keysOrdered', keysOrdered);
+
+
+    return tasksSorted
+  },
   // Tasks filtered for the search
-  tasksFiltered: (state) => {
+  tasksFiltered: (state, getters) => {
+    let tasksSorted = getters.tasksSorted
     let tasksFiltered = {}
     if (state.search) {
-      Object.keys(state.tasks).forEach((key) => {
-        let task = state.tasks[key]
+      Object.keys(tasksSorted).forEach((key) => {
+        let task = tasksSorted[key]
         if (task.name.toLowerCase().includes(state.search.toLowerCase()) || task.comment.toLowerCase().includes(state.search.toLowerCase())) {
           tasksFiltered[key] = task
         }
       })
       return tasksFiltered
     }
-    return state.tasks
+    return tasksSorted
   },
   tasksTodo: (state, getters) => {
     let tasksFiltered = getters.tasksFiltered
