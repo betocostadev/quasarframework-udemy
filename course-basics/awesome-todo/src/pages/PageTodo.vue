@@ -1,8 +1,18 @@
 <template>
   <q-page class="q-pa-md">
-    <tasks-todo :tasksTodo="tasksTodo" />
 
-    <tasks-completed :tasksCompleted="tasksCompleted" />
+    <div class="row">
+      <search />
+    </div>
+
+    <tasks-todo v-if="Object.keys(tasksTodo).length"
+      :tasksTodo="tasksTodo" />
+
+    <no-tasks v-else>Very good, you have no more tasks 👏</no-tasks>
+
+    <tasks-completed v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
+
+    <p v-else class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>
 
     <div class="absolute-bottom text-center q-mb-lg">
       <q-btn
@@ -37,9 +47,15 @@ export default {
     ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted'])
   },
   components: {
-    'addtask-modal': require('../components/Modals/AddTask').default,
+    'addtask-modal': require('../components/Tasks/Modals/AddTask').default,
     'tasks-todo': require('../components/Tasks/TasksTodo').default,
-    'tasks-completed': require('../components/Tasks/TasksCompleted').default
+    'tasks-completed': require('../components/Tasks/TasksCompleted').default,
+    'no-tasks': require('../components/Tasks/Modals/NoTasks').default,
+    'search': require('../components/Tasks/Tools/Search').default
+  },
+  mounted() {
+    // Using the $root.$emit on the no-tasks component to use the code below
+    this.$root.$on('showAddTask', () => this.showAddTask = true)
   }
   // methods: {
   //   taskComplete () {

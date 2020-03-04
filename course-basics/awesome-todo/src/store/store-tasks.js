@@ -27,8 +27,9 @@ const state = {
       completed: true,
       dueDate: '2020/03/03',
       dueTime: '18:00'
-    },
-  }
+    }
+  },
+  search: 'Tes==t'
 }
 
 const mutations = {
