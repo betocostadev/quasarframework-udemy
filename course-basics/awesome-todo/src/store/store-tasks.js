@@ -106,8 +106,7 @@ const getters = {
     keysOrdered.forEach((key) => {
       tasksSorted[key] = state.tasks[key]
     })
-    console.log('keysOrdered', keysOrdered);
-
+    // console.log('keysOrdered', keysOrdered)
 
     return tasksSorted
   },
