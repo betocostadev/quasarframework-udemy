@@ -96,7 +96,7 @@ export default {
     }
   },
   components: {
-    'edit-task': require('../Modals/EditTask').default
+    'edit-task': require('./Modals/EditTask').default
   },
   methods: {
     ...mapActions('tasks', ['updateTask', 'deleteTask']),

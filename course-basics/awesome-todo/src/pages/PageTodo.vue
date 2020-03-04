@@ -5,14 +5,19 @@
       <search />
     </div>
 
-    <tasks-todo v-if="Object.keys(tasksTodo).length"
-      :tasksTodo="tasksTodo" />
+    <p
+      v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"
+      class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2"
+      >No results for the search.</p>
 
-    <no-tasks v-else>Very good, you have no more tasks 👏</no-tasks>
+    <no-tasks v-if="!Object.keys(tasksTodo).length && !search">Very good, you have no more tasks 👏</no-tasks>
+
+    <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
 
     <tasks-completed v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
 
-    <p v-else class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>
+    <p v-if="!search && !Object.keys(tasksCompleted).length"
+      class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>
 
     <div class="absolute-bottom text-center q-mb-lg">
       <q-btn
@@ -32,7 +37,7 @@
 </template>
 
 <script>
-  import { mapGetters } from "vuex"
+  import { mapGetters, mapState } from "vuex"
 export default {
   data() {
     return {
@@ -44,7 +49,8 @@ export default {
     tasks() {
       this.$store.getters['tasks/tasks']
     } */
-    ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted'])
+    ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted']),
+    ...mapState('tasks', ['search'])
   },
   components: {
     'addtask-modal': require('../components/Tasks/Modals/AddTask').default,

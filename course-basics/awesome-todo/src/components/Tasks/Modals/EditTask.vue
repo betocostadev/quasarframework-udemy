@@ -40,12 +40,12 @@ export default {
     }
   },
   components: {
-    'modal-header': require('../Shared/ModalHeader').default,
-    'modal-task-name': require('../Shared/ModalTaskName').default,
-    'modal-task-date': require('../Shared/ModalTaskDate').default,
-    'modal-task-time': require('../Shared/ModalTaskTime').default,
-    'modal-task-note': require('../Shared/ModalTaskNote').default,
-    'modal-buttons': require('../Shared/ModalButtons').default
+    'modal-header': require('../../Shared/ModalHeader').default,
+    'modal-task-name': require('../../Shared/ModalTaskName').default,
+    'modal-task-date': require('../../Shared/ModalTaskDate').default,
+    'modal-task-time': require('../../Shared/ModalTaskTime').default,
+    'modal-task-note': require('../../Shared/ModalTaskNote').default,
+    'modal-buttons': require('../../Shared/ModalButtons').default
   },
   methods: {
     // The ref called name was place inside the QInput for the task name
