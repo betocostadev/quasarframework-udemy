@@ -3,6 +3,7 @@
   <!-- The v-for was changed since we are using an object. Now the (task, key) will get the object key. -->
   <q-item
     @click="updateTask({ id: id, updates: { completed: !task.completed }})"
+    v-touch-hold:1000.mouse="editOnHold"
     clickable
     :class="!task.completed ? 'bg-amber-1' : 'bg-green-1'"
     tag="label"
@@ -39,13 +40,13 @@
           <q-item-label
             class="row justify-end"
             caption>
-            {{task.dueDate}}
+            {{ task.dueDate | niceDate }}
           </q-item-label>
 
           <q-item-label
             class="row justify-end"
             caption>
-            <small>{{task.dueTime}}</small>
+            <small>{{ task.dueTime }}</small>
           </q-item-label>
         <!-- <q-icon name="star" color="yellow" /> -->
         </div>
@@ -87,6 +88,9 @@
 
 <script>
 import { mapActions } from "vuex"
+import { date } from 'quasar'
+const { addToDate, formatDate } = date
+// const { formatDate } = date
 
 export default {
   props: ['task', 'id'],
@@ -97,6 +101,11 @@ export default {
   },
   components: {
     'edit-task': require('./Modals/EditTask').default
+  },
+  filters: {
+    niceDate(value) {
+      return date.formatDate(value, 'D MMM')
+    }
   },
   methods: {
     ...mapActions('tasks', ['updateTask', 'deleteTask']),
@@ -116,8 +125,11 @@ export default {
       }).onOk(() => {
         this.deleteTask(id)
       })
+    },
+    editOnHold(id) {
+      this.showEditTask = true
     }
-  }
+  },
 }
 </script>
 
