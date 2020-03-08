@@ -8,17 +8,17 @@ import { uid } from 'quasar'
 const state = {
   tasks: {
     'ID1': {
-      name: 'Quasar Video 91',
+      name: 'Quasar Section 14',
       note: 'Completed',
       completed: true,
-      dueDate: '2020/03/03',
+      dueDate: '2020/08/03',
       dueTime: '18:00'
     },
     'ID2': {
-      name: 'Quasar Video 93',
+      name: 'Quasar Section 15',
       note: 'Complete it today',
       completed: false,
-      dueDate: '2020/03/03',
+      dueDate: '2020/08/03',
       dueTime: '18:00'
     },
     'ID3': {
@@ -34,7 +34,63 @@ const state = {
       completed: false,
       dueDate: '2020/03/03',
       dueTime: '18:00'
-    }
+    },
+    'ID5': {
+      name: 'Quasar Section 16',
+      note: 'Completed',
+      completed: true,
+      dueDate: '2020/08/03',
+      dueTime: '18:00'
+    },
+    'ID6': {
+      name: 'Quasar Section 17',
+      note: 'Complete it today',
+      completed: false,
+      dueDate: '2020/08/03',
+      dueTime: '18:00'
+    },
+    'ID7': {
+      name: 'Quasar Section 18',
+      note: 'Completed',
+      completed: true,
+      dueDate: '2020/08/03',
+      dueTime: '18:00'
+    },
+    'ID8': {
+      name: 'Quasar Section 19',
+      note: 'Complete it today',
+      completed: false,
+      dueDate: '2020/08/03',
+      dueTime: '19:00'
+    },
+    'ID9': {
+      name: 'Quasar Section 20',
+      note: 'Complete it today',
+      completed: false,
+      dueDate: '2020/08/03',
+      dueTime: '19:00'
+    },
+    'ID10': {
+      name: 'Quasar Section 21',
+      note: 'Complete it today',
+      completed: false,
+      dueDate: '2020/08/03',
+      dueTime: '20:00'
+    },
+    'ID11': {
+      name: 'Workout',
+      note: 'Arms',
+      completed: true,
+      dueDate: '2020/08/03',
+      dueTime: '12:00'
+    },
+    'ID12': {
+      name: 'Berga',
+      note: 'Bread, chesse, coke, chips',
+      completed: true,
+      dueDate: '2020/08/03',
+      dueTime: '12:00'
+    },
   },
   search: '',
   sort: 'name'

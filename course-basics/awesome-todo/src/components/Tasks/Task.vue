@@ -15,13 +15,18 @@
         color="teal" />
     </q-item-section>
 
+<!-- Added v-html below due to the SEARCH. Otherwise VUE would display the <span> with the filter -->
     <q-item-section>
       <q-item-label
         :class="{ 'text-strikethrough' : task.completed }"
-      >{{task.name}}
+        v-html="$options.filters.searchHighlight(task.name, search)"
+      >{{ task.name | searchHighlight(search) }}
       </q-item-label>
-      <q-item-label caption>
-        {{task.note}}
+
+      <q-item-label
+        caption
+        v-html="$options.filters.searchHighlight(task.note, search)">
+        {{ task.note | searchHighlight(search) }}
       </q-item-label>
     </q-item-section>
 
@@ -87,7 +92,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex"
+import { mapState, mapActions } from "vuex"
 import { date } from 'quasar'
 const { addToDate, formatDate } = date
 // const { formatDate } = date
@@ -102,9 +107,20 @@ export default {
   components: {
     'edit-task': require('./Modals/EditTask').default
   },
+    computed: {
+    ...mapState('tasks', ['search'])
+  },
   filters: {
     niceDate(value) {
       return date.formatDate(value, 'D MMM')
+    },
+    // Using the regEx here to make it case insensitive
+    searchHighlight(value, search) {
+      let searchRegExp = new RegExp(search, 'ig')
+      if (search) {
+        return value.replace(searchRegExp, (match) => `<span class="bg-yellow-6">${match}</span>`)
+      }
+      return value
     }
   },
   methods: {

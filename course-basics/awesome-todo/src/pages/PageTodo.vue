@@ -11,11 +11,13 @@
       class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2"
       >No results for the search.</p>
 
-    <no-tasks v-if="!Object.keys(tasksTodo).length && !search">Very good, you have no more tasks 👏</no-tasks>
+    <div class="relative-position">
+      <no-tasks v-if="!Object.keys(tasksTodo).length && !search">Very good, you have no more tasks 👏</no-tasks>
 
-    <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
+      <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
 
-    <tasks-completed v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
+      <tasks-completed v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
+    </div>
 
     <p v-if="!search && !Object.keys(tasksCompleted).length"
       class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>

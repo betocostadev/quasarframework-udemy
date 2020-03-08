@@ -32,32 +32,20 @@
 
 <script>
 import { mapActions } from 'vuex'
+import mixinAddEditTask from '../../../mixins/mixin-add-edit-task'
+
 export default {
   props: ['task', 'id'],
+  mixins: [ mixinAddEditTask ],
   data() {
     return {
       taskToSubmit: { }
     }
   },
-  components: {
-    'modal-header': require('../../Shared/ModalHeader').default,
-    'modal-task-name': require('../../Shared/ModalTaskName').default,
-    'modal-task-date': require('../../Shared/ModalTaskDate').default,
-    'modal-task-time': require('../../Shared/ModalTaskTime').default,
-    'modal-task-note': require('../../Shared/ModalTaskNote').default,
-    'modal-buttons': require('../../Shared/ModalButtons').default
-  },
   methods: {
     // The ref called name was place inside the QInput for the task name
     ...mapActions('tasks', ['updateTask']),
 
-    submitForm() {
-      // console.log(this.$refs.name)
-      this.$refs.modalTaskName.$refs.name.validate()
-      if (!this.$refs.modalTaskName.$refs.name.hasError) {
-        this.submitTask()
-      }
-    },
     submitTask() {
       // Triggers the addTask action that calls for the add task mutation
       this.updateTask({

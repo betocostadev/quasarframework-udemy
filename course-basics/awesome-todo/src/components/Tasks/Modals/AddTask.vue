@@ -32,7 +32,11 @@
 
 <script>
 import { mapActions } from 'vuex'
+// Created a mixing to be used with AddTask and EditTask both, avoiding to repeat code.
+import mixinAddEditTask from '../../../mixins/mixin-add-edit-task'
+
 export default {
+  mixins: [mixinAddEditTask],
   data() {
     return {
       taskToSubmit: {
@@ -44,25 +48,9 @@ export default {
       }
     }
   },
-  components: {
-    'modal-header': require('../../Shared/ModalHeader').default,
-    'modal-task-name': require('../../Shared/ModalTaskName').default,
-    'modal-task-date': require('../../Shared/ModalTaskDate').default,
-    'modal-task-time': require('../../Shared/ModalTaskTime').default,
-    'modal-task-note': require('../../Shared/ModalTaskNote').default,
-    'modal-buttons': require('../../Shared/ModalButtons').default
-  },
   methods: {
     // The ref called name was placed inside the QInput for the task name
     ...mapActions('tasks', ['addTask']),
-
-    submitForm() {
-      // console.log(this.$refs.name)
-      this.$refs.modalTaskName.$refs.name.validate()
-      if (!this.$refs.modalTaskName.$refs.name.hasError) {
-        this.submitTask()
-      }
-    },
     submitTask(e) {
       // Triggers the addTask action that calls for the add task mutation
       this.addTask(this.taskToSubmit)
