@@ -22,75 +22,54 @@ const state = {
       dueTime: '18:00'
     },
     'ID3': {
-      name: 'Complete Scrimba Vuex',
-      note: 'Gone for good',
-      completed: true,
-      dueDate: '2020/03/03',
-      dueTime: '18:00'
-    },
-    'ID4': {
-      name: 'Act of fight',
-      note: 'Gone for good',
-      completed: false,
-      dueDate: '2020/03/03',
-      dueTime: '18:00'
-    },
-    'ID5': {
       name: 'Quasar Section 16',
       note: 'Completed',
-      completed: true,
+      completed: false,
       dueDate: '2020/08/03',
       dueTime: '18:00'
     },
-    'ID6': {
+    'ID4': {
       name: 'Quasar Section 17',
       note: 'Complete it today',
       completed: false,
       dueDate: '2020/08/03',
       dueTime: '18:00'
     },
-    'ID7': {
+    'ID5': {
       name: 'Quasar Section 18',
-      note: 'Completed',
-      completed: true,
+      note: 'Try to complete it today!',
+      completed: false,
       dueDate: '2020/08/03',
       dueTime: '18:00'
     },
-    'ID8': {
+    'ID6': {
       name: 'Quasar Section 19',
-      note: 'Complete it today',
+      note: 'Try to complete it today!',
       completed: false,
       dueDate: '2020/08/03',
       dueTime: '19:00'
     },
-    'ID9': {
+    'ID7': {
       name: 'Quasar Section 20',
-      note: 'Complete it today',
+      note: 'Try to complete it today!',
       completed: false,
       dueDate: '2020/08/03',
       dueTime: '19:00'
     },
-    'ID10': {
-      name: 'Quasar Section 21',
-      note: 'Complete it today',
-      completed: false,
-      dueDate: '2020/08/03',
-      dueTime: '20:00'
-    },
-    'ID11': {
+    'ID8': {
       name: 'Workout',
       note: 'Arms',
       completed: true,
       dueDate: '2020/08/03',
       dueTime: '12:00'
     },
-    'ID12': {
+    'ID9': {
       name: 'Berga',
       note: 'Bread, chesse, coke, chips',
       completed: true,
       dueDate: '2020/08/03',
       dueTime: '12:00'
-    },
+    }
   },
   search: '',
   sort: 'name'

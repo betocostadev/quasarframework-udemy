@@ -1,41 +1,46 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page>
 
-    <div class="row">
-      <search />
-      <sort />
-    </div>
+    <div class="q-pa-md absolute full-width full-height column">
+      <div class="row">
+        <search />
+        <sort />
+      </div>
 
-    <p
-      v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"
-      class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2"
-      >No results for the search.</p>
+      <p
+        v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"
+        class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2"
+        >No results for the search.</p>
 
-    <div class="relative-position">
-      <no-tasks v-if="!Object.keys(tasksTodo).length && !search">Very good, you have no more tasks 👏</no-tasks>
+      <q-scroll-area class="q-scroll-area-tasks">
+        <no-tasks
+          v-if="!Object.keys(tasksTodo).length && !search && !settings.showTasksInOneList"
+          >Very good, you have no more tasks 👏</no-tasks>
 
-      <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
+        <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
 
-      <tasks-completed v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
-    </div>
+        <tasks-completed class="q-mb-xl" v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
+      </q-scroll-area>
 
-    <p v-if="!search && !Object.keys(tasksCompleted).length"
-      class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>
+      <p v-if="!search && !Object.keys(tasksCompleted).length"
+        class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>
 
-    <div class="absolute-bottom text-center q-mb-lg">
-      <q-btn
-        @click="showAddTask = true"
-        round
-        color="primary"
-        size="24px"
-        icon="add"
-      />
+      <!-- The no-pointer-events disable the mouse click events on the div, then we enable it below. -->
+      <div class="absolute-bottom text-center q-mb-lg no-pointer-events">
+        <q-btn
+          @click="showAddTask = true"
+          round
+          class="all-pointer-events"
+          color="primary"
+          size="24px"
+          icon="add"
+        />
+      </div>
     </div>
 
     <q-dialog v-model="showAddTask">
       <addtask-modal @close="showAddTask = false"></addtask-modal>
     </q-dialog>
-
   </q-page>
 </template>
 
@@ -53,6 +58,7 @@ export default {
       this.$store.getters['tasks/tasks']
     } */
     ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted']),
+    ...mapGetters('settings', ['settings']),
     ...mapState('tasks', ['search'])
   },
   components: {
@@ -78,6 +84,8 @@ export default {
 </script>
 
 <style lang="stylus">
-
+  .q-scroll-area-tasks
+    display: flex
+    flex-grow: 1
 
 </style>
