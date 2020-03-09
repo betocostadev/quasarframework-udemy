@@ -15,6 +15,13 @@
           Awesome To-Do
         </q-toolbar-title>
 
+        <q-btn
+          to="/auth"
+          flat
+          icon-right="account_circle"
+          label="Login"
+          class="absolute-right" />
+
       </q-toolbar>
     </q-header>
 
