@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: ['tab'],
   data() {
@@ -55,10 +57,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions('auth', ['registerUser']),
+
     isValidEmailAddress(email) {
-      let rg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return rg.test(String(email).toLowerCase());
+      let rg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return rg.test(String(email).toLowerCase())
     },
+
     submitForm() {
       this.$refs.email.validate()
       this.$refs.password.validate()
@@ -66,7 +71,7 @@ export default {
         if (this.tab === 'login') {
           console.log('Login the user')
         } else {
-          console.log('Register the user')
+          this.registerUser(this.formData)
         }
       }
     }
