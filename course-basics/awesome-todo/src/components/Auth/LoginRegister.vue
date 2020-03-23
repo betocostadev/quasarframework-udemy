@@ -57,7 +57,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('auth', ['registerUser']),
+    ...mapActions('auth', ['registerUser', 'loginUser']),
 
     isValidEmailAddress(email) {
       let rg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -69,7 +69,7 @@ export default {
       this.$refs.password.validate()
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
         if (this.tab === 'login') {
-          console.log('Login the user')
+          this.loginUser(this.formData)
         } else {
           this.registerUser(this.formData)
         }
