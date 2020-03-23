@@ -1,6 +1,7 @@
 // Using Google's firestore for Auth. /boot/firebase.js
 import { LocalStorage } from 'quasar'
 import { firebaseAuth } from 'boot/firebase'
+import { showErrorMessage } from 'src/functions/function-show-error-message'
 
 const state = {
   loggedIn: false
@@ -12,12 +13,11 @@ const getters = {
 
 const actions = {
   registerUser({}, payload) {
-    console.log('registerUser: ', payload)
     firebaseAuth.createUserWithEmailAndPassword(payload.email, payload.password)
       .then(response => {
-        console.log('response: ', response)
+        console.log('User registered!')
       })
-      .catch(error => console.log('Error message: ', error.message))
+      .catch(error => showErrorMessage(error.message))
   },
 
   loginUser({}, payload) {
@@ -25,7 +25,7 @@ const actions = {
       .then(response => {
         console.log('response: ', response)
       })
-      .catch(error => console.log('Error message: ', error.message))
+      .catch(error => showErrorMessage(error.message))
   },
 
   handleAuthStateChange({ commit }) {
