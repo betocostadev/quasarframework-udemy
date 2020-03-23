@@ -34,7 +34,7 @@
 export default {
   data () {
     return {
-      tab: 'register'
+      tab: 'login'
     }
   },
   components: {
@@ -45,6 +45,6 @@ export default {
 
 <style lang="stylus">
   .auth-tabs
-    max-width: 600px
+    max-width: 500px
     margin: 0 auto
 </style>
