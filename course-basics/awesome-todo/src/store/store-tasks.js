@@ -2,74 +2,33 @@
 // Generate UID - Quasar component https://quasar.dev/quasar-utils/other-utils#Generate-UID
 import Vue from "vue"
 import { uid } from 'quasar'
+import { firebaseDb, firebaseAuth } from 'boot/firebase'
 
 // The tasks array was changed for an object because we will use Firebase.
 // Firebase will create objects inside objects inside objects...
 const state = {
   tasks: {
-    'ID1': {
-      name: 'Quasar Section 14',
-      note: 'Completed',
-      completed: true,
-      dueDate: '2020/08/03',
-      dueTime: '18:00'
-    },
-    'ID2': {
-      name: 'Quasar Section 15',
-      note: 'Complete it today',
-      completed: false,
-      dueDate: '2020/08/03',
-      dueTime: '18:00'
-    },
-    'ID3': {
-      name: 'Quasar Section 16',
-      note: 'Completed',
-      completed: false,
-      dueDate: '2020/08/03',
-      dueTime: '18:00'
-    },
-    'ID4': {
-      name: 'Quasar Section 17',
-      note: 'Complete it today',
-      completed: false,
-      dueDate: '2020/08/03',
-      dueTime: '18:00'
-    },
-    'ID5': {
-      name: 'Quasar Section 18',
-      note: 'Try to complete it today!',
-      completed: false,
-      dueDate: '2020/08/03',
-      dueTime: '18:00'
-    },
-    'ID6': {
-      name: 'Quasar Section 19',
-      note: 'Try to complete it today!',
-      completed: false,
-      dueDate: '2020/08/03',
-      dueTime: '19:00'
-    },
-    'ID7': {
-      name: 'Quasar Section 20',
-      note: 'Try to complete it today!',
-      completed: false,
-      dueDate: '2020/08/03',
-      dueTime: '19:00'
-    },
-    'ID8': {
-      name: 'Workout',
-      note: 'Arms',
-      completed: true,
-      dueDate: '2020/08/03',
-      dueTime: '12:00'
-    },
-    'ID9': {
-      name: 'Berga',
-      note: 'Bread, chesse, coke, chips',
-      completed: true,
-      dueDate: '2020/08/03',
-      dueTime: '12:00'
-    }
+    // 'ID1': {
+    //   name: 'Quasar Section 14',
+    //   note: 'Completed',
+    //   completed: true,
+    //   dueDate: '2020/08/03',
+    //   dueTime: '18:00'
+    // },
+    // 'ID2': {
+    //   name: 'Quasar Section 15',
+    //   note: 'Complete it today',
+    //   completed: false,
+    //   dueDate: '2020/08/03',
+    //   dueTime: '19:00'
+    // },
+    // 'ID3': {
+    //   name: 'Quasar Section 16',
+    //   note: 'Completed',
+    //   completed: true,
+    //   dueDate: '2020/08/03',
+    //   dueTime: '15:35'
+    // }
   },
   search: '',
   sort: 'name'
@@ -99,19 +58,20 @@ const mutations = {
 // Pass the payload: ( {}, payload )
 // We use the commit to update the mutation
 const actions = {
-  updateTask({ commit }, payload) {
-    commit('updateTask', payload)
+  updateTask({ dispatch }, payload) {
+    dispatch('firebaseUpdateTask', payload)
   },
   deleteTask({ commit }, id) {
     commit('deleteTask', id)
   },
-  addTask({ commit }, task) {
+  // Changed from commit to dispatch, since we are using Firebase now
+  addTask({ dispatch }, task) {
     let taskId = uid()
     let payload = {
       id: taskId,
       task: task
     }
-    commit('addTask', payload)
+    dispatch('firebaseAddTask', payload)
   },
 
   setSearch({ commit }, value) {
@@ -120,6 +80,53 @@ const actions = {
 
   setSort({ commit }, value) {
     commit('setSort', value)
+  },
+
+  firebaseReadData({ commit }) {
+    // Reading data from Firebase
+    let userId = firebaseAuth.currentUser.uid
+    let userTasks = firebaseDb.ref(`tasks/${userId}`)
+
+    // Child added - When a task is added
+    userTasks.on('child_added', snapshot => {
+      // console.log('Snapshot: ', snapshot)
+      let task = snapshot.val()
+      // console.log('Task: ', task)
+
+      let payload = {
+        id: snapshot.key,
+        task: task
+      }
+      commit('addTask', payload)
+    })
+    // Child changed - Task update, like completed: true
+    userTasks.on('child_changed', snapshot => {
+      let task = snapshot.val()
+      let payload = {
+        id: snapshot.key,
+        updates: task
+      }
+      commit('updateTask', payload)
+    })
+    // Child removed - A task is deleted
+    userTasks.on('child_removed', snapshot => {
+      let taskId = snapshot.key
+      commit('deleteTask', taskId)
+    })
+  },
+
+  firebaseAddTask({}, payload) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref(`tasks/${userId}/${payload.id}`)
+    taskRef.set(payload.task)
+  },
+
+  firebaseUpdateTask({}, payload) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref(`tasks/${userId}/${payload.id}`)
+    taskRef.set(payload.updates)
+    // Testar se isso aqui vai funcionar melhor sem o updates.
+    // Vai ter que arrumar no firebase porque o upload está errado. Adicione as novas tasks
   }
 }
 

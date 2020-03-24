@@ -1,5 +1,5 @@
 // Using Google's firestore for Auth. /boot/firebase.js
-import { LocalStorage } from 'quasar'
+import { LocalStorage, Loading } from 'quasar'
 import { firebaseAuth } from 'boot/firebase'
 import { showErrorMessage } from 'src/functions/function-show-error-message'
 
@@ -13,6 +13,7 @@ const getters = {
 
 const actions = {
   registerUser({}, payload) {
+    Loading.show()
     firebaseAuth.createUserWithEmailAndPassword(payload.email, payload.password)
       .then(response => {
         console.log('User registered!')
@@ -21,6 +22,7 @@ const actions = {
   },
 
   loginUser({}, payload) {
+    Loading.show()
     firebaseAuth.signInWithEmailAndPassword(payload.email, payload.password)
       .then(response => {
         console.log('response: ', response)
@@ -28,14 +30,17 @@ const actions = {
       .catch(error => showErrorMessage(error.message))
   },
 
-  handleAuthStateChange({ commit }) {
+  // We use dispatch here to start the store-task action to read the data from Firebase
+  handleAuthStateChange({ commit, dispatch }) {
     // Fired as soon as the App starts, like settings
     firebaseAuth.onAuthStateChanged((user) => {
+      Loading.hide()
       if (user) {
         // User is signed in.
         commit('setLoggedIn', true)
         LocalStorage.set('loggedIn', true)
         this.$router.push('/').catch(err => { console.log(err) })
+        dispatch('tasks/firebaseReadData', null, { root: true })
       } else {
         commit('setLoggedIn', false)
         LocalStorage.set('loggedIn', false)
