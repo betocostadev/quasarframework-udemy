@@ -2,40 +2,55 @@
   <q-page>
 
     <div class="q-pa-md absolute full-width full-height column">
-      <div class="row">
-        <search />
-        <sort />
-      </div>
 
-      <p
-        v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"
-        class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2"
-        >No results for the search.</p>
+      <template v-if="tasksDownloaded">
 
-      <q-scroll-area class="q-scroll-area-tasks">
-        <no-tasks
-          v-if="!Object.keys(tasksTodo).length && !search && !settings.showTasksInOneList"
-          >Very good, you have no more tasks 👏</no-tasks>
+        <div class="row q-mb-lg">
+          <search />
+          <sort />
+        </div>
 
-        <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
+        <p
+          v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksCompleted).length"
+          class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2"
+          >No results for the search.</p>
 
-        <tasks-completed class="q-mb-xl" v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
-      </q-scroll-area>
+        <q-scroll-area class="q-scroll-area-tasks">
+          <no-tasks
+            v-if="!Object.keys(tasksTodo).length && !search && !settings.showTasksInOneList"
+            >Very good, you have no more tasks 👏</no-tasks>
 
-      <p v-if="!search && !Object.keys(tasksCompleted).length"
-        class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>
+          <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
 
-      <!-- The no-pointer-events disable the mouse click events on the div, then we enable it below. -->
-      <div class="absolute-bottom text-center q-mb-lg no-pointer-events">
-        <q-btn
-          @click="showAddTask = true"
-          round
-          class="all-pointer-events"
-          color="primary"
-          size="24px"
-          icon="add"
-        />
-      </div>
+          <tasks-completed class="q-mb-xl" v-if="Object.keys(tasksCompleted).length" :tasksCompleted="tasksCompleted" />
+        </q-scroll-area>
+
+        <p v-if="!search && !Object.keys(tasksCompleted).length"
+          class="text-subtitle2 q-ma-lg q-pa-lg bg-amber-2">You haven't completed any task yet. 😕</p>
+
+        <!-- The no-pointer-events disable the mouse click events on the div, then we enable it below. -->
+        <div class="absolute-bottom text-center q-mb-lg no-pointer-events">
+          <q-btn
+            @click="showAddTask = true"
+            round
+            class="all-pointer-events"
+            color="primary"
+            size="24px"
+            icon="add"
+          />
+        </div>
+
+      </template>
+
+      <template v-else>
+        <span class="absolute-center">
+          <q-spinner-pie
+            color="primary"
+            size="4em"
+          />
+        </span>
+      </template>
+
     </div>
 
     <q-dialog v-model="showAddTask">
@@ -59,7 +74,7 @@ export default {
     } */
     ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted']),
     ...mapGetters('settings', ['settings']),
-    ...mapState('tasks', ['search'])
+    ...mapState('tasks', ['search', 'tasksDownloaded'])
   },
   components: {
     'addtask-modal': require('../components/Tasks/Modals/AddTask').default,

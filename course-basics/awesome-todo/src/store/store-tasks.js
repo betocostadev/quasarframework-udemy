@@ -21,17 +21,11 @@ const state = {
     //   completed: false,
     //   dueDate: '2020/08/03',
     //   dueTime: '19:00'
-    // },
-    // 'ID3': {
-    //   name: 'Quasar Section 16',
-    //   note: 'Completed',
-    //   completed: true,
-    //   dueDate: '2020/08/03',
-    //   dueTime: '15:35'
     // }
   },
   search: '',
-  sort: 'name'
+  sort: 'name',
+  tasksDownloaded: false
 }
 
 const mutations = {
@@ -52,6 +46,10 @@ const mutations = {
 
   setSort(state, value) {
     state.sort = value
+  },
+
+  setTasksDownloaded(state, value) {
+    state.tasksDownloaded = value
   }
 }
 
@@ -61,8 +59,9 @@ const actions = {
   updateTask({ dispatch }, payload) {
     dispatch('firebaseUpdateTask', payload)
   },
-  deleteTask({ commit }, id) {
-    commit('deleteTask', id)
+
+  deleteTask({ dispatch }, id) {
+    dispatch('firebaseDeleteTask', id)
   },
   // Changed from commit to dispatch, since we are using Firebase now
   addTask({ dispatch }, task) {
@@ -86,6 +85,11 @@ const actions = {
     // Reading data from Firebase
     let userId = firebaseAuth.currentUser.uid
     let userTasks = firebaseDb.ref(`tasks/${userId}`)
+
+    // Initial check for data
+    userTasks.once('value', snapshot => {
+      commit('setTasksDownloaded', true)
+    })
 
     // Child added - When a task is added
     userTasks.on('child_added', snapshot => {
@@ -124,9 +128,15 @@ const actions = {
   firebaseUpdateTask({}, payload) {
     let userId = firebaseAuth.currentUser.uid
     let taskRef = firebaseDb.ref(`tasks/${userId}/${payload.id}`)
-    taskRef.set(payload.updates)
+    taskRef.update(payload.updates)
     // Testar se isso aqui vai funcionar melhor sem o updates.
     // Vai ter que arrumar no firebase porque o upload está errado. Adicione as novas tasks
+  },
+
+  firebaseDeleteTask({}, taskId) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref(`tasks/${userId}/${taskId}`)
+    taskRef.remove()
   }
 }
 
