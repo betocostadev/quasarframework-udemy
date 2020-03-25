@@ -39,6 +39,10 @@ const mutations = {
   addTask(state, payload) {
     Vue.set(state.tasks, payload.id, payload.task)
   },
+  // Clear tasks when the user logout - Trigger it in the store-auth
+  clearTasks(state) {
+    state.tasks = {}
+  },
 
   setSearch(state, value) {
     state.search = value
@@ -89,6 +93,8 @@ const actions = {
     // Initial check for data
     userTasks.once('value', snapshot => {
       commit('setTasksDownloaded', true)
+    }, error => {
+      console.log('Error message: ', error.message)
     })
 
     // Child added - When a task is added
@@ -121,8 +127,11 @@ const actions = {
 
   firebaseAddTask({}, payload) {
     let userId = firebaseAuth.currentUser.uid
+    userId = 'fgaxJOIRwieRHhfQjumwY4MvNjs2'
     let taskRef = firebaseDb.ref(`tasks/${userId}/${payload.id}`)
-    taskRef.set(payload.task)
+    taskRef.set(payload.task, error => {
+      if (error) console.log(error.message)
+    })
   },
 
   firebaseUpdateTask({}, payload) {
