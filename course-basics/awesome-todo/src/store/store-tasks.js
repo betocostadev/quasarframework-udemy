@@ -1,8 +1,9 @@
 // We will import vue here because we will not use 'delete object method'. We will use a vue method to keep the component reactive
 // Generate UID - Quasar component https://quasar.dev/quasar-utils/other-utils#Generate-UID
 import Vue from "vue"
-import { uid } from 'quasar'
+import { uid, Notify } from 'quasar'
 import { firebaseDb, firebaseAuth } from 'boot/firebase'
+import { showErrorMessage } from 'src/functions/function-show-error-message'
 
 // The tasks array was changed for an object because we will use Firebase.
 // Firebase will create objects inside objects inside objects...
@@ -32,10 +33,12 @@ const mutations = {
   updateTask(state, payload) {
     Object.assign(state.tasks[payload.id], payload.updates)
   },
+
   deleteTask(state, id) {
     // delete state.tasks.id //it works, but its not recommended to use with vue
     Vue.delete(state.tasks, id)
   },
+
   addTask(state, payload) {
     Vue.set(state.tasks, payload.id, payload.task)
   },
@@ -94,7 +97,8 @@ const actions = {
     userTasks.once('value', snapshot => {
       commit('setTasksDownloaded', true)
     }, error => {
-      console.log('Error message: ', error.message)
+      showErrorMessage(error.message)
+      this.$router.replace('/auth')
     })
 
     // Child added - When a task is added
@@ -127,17 +131,26 @@ const actions = {
 
   firebaseAddTask({}, payload) {
     let userId = firebaseAuth.currentUser.uid
-    userId = 'fgaxJOIRwieRHhfQjumwY4MvNjs2'
     let taskRef = firebaseDb.ref(`tasks/${userId}/${payload.id}`)
     taskRef.set(payload.task, error => {
-      if (error) console.log(error.message)
+      if (error) showErrorMessage(error.message)
+      else Notify.create('Task added')
     })
   },
 
   firebaseUpdateTask({}, payload) {
     let userId = firebaseAuth.currentUser.uid
     let taskRef = firebaseDb.ref(`tasks/${userId}/${payload.id}`)
-    taskRef.update(payload.updates)
+    taskRef.update(payload.updates, error => {
+      if (error) {
+        showErrorMessage(error.message)
+      } else {
+        let keys = Object.keys(payload.updates)
+        if (!(keys.includes('completed') && keys.length == 1)) {
+          Notify.create('Task updated')
+        }
+      }
+    })
     // Testar se isso aqui vai funcionar melhor sem o updates.
     // Vai ter que arrumar no firebase porque o upload está errado. Adicione as novas tasks
   },
@@ -145,7 +158,10 @@ const actions = {
   firebaseDeleteTask({}, taskId) {
     let userId = firebaseAuth.currentUser.uid
     let taskRef = firebaseDb.ref(`tasks/${userId}/${taskId}`)
-    taskRef.remove()
+    taskRef.remove(error => {
+      if (error) showErrorMessage(error.message)
+      else Notify.create('Task deleted')
+    })
   }
 }
 
