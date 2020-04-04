@@ -14,15 +14,26 @@ if (process.env.PROD) {
   global.__statics = require('path').join(__dirname, 'statics').replace(/\\/g, '\\\\')
 }
 
+/* VARIABLES & CONSTANTS */
+
 let mainWindow
+
+
+/* APP READY */
 
 function createWindow () {
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 600,
+    width: 800,
+    height: 800,
+    minWidth: 500,
+    minHeight: 600,
+    titleBarStyle: 'customButtonsOnHover',
+    transparent: true,
+    // Adds the frame of the window
+    // frame: false,
     useContentSize: true,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
@@ -41,16 +52,19 @@ function createWindow () {
   })
 }
 
+/* APP EVENTS */
+
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  // if (process.platform !== 'darwin') {
     app.quit()
-  }
+  // }
 })
 
-app.on('activate', () => {
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
+// Not need to use the code below, since we are closing the App when the user closes the window.
+// app.on('activate', () => {
+//   if (mainWindow === null) {
+//     createWindow()
+//   }
+// })
