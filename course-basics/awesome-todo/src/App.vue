@@ -13,6 +13,10 @@ import { mapActions } from 'vuex'
       ...mapActions('auth', ['handleAuthStateChange'])
     },
     mounted() {
+      // Get the Electron IPC
+      require('electron').ipcRenderer.on('show-settings', () => {
+        this.$router.push('/settings')
+      })
       this.getSettings()
       this.handleAuthStateChange()
     }

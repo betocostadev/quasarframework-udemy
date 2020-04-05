@@ -1,4 +1,5 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
+import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
+import { menuTemplate } from './electron-main-menu-template'
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -16,7 +17,9 @@ if (process.env.PROD) {
 
 /* VARIABLES & CONSTANTS */
 
-let mainWindow
+// Exporting the mainWindow so Electron can use it
+export let mainWindow
+const menu = Menu.buildFromTemplate(menuTemplate)
 
 
 /* APP READY */
@@ -50,6 +53,8 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  Menu.setApplicationMenu(menu)
 }
 
 /* APP EVENTS */
