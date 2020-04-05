@@ -22,15 +22,23 @@ export const menuTemplate = [
   {
     label: 'File',
     submenu: [
-      isMac ? { role: 'close' } : { role: 'quit' },
       // SubItems for file menu
+      // This is how we send the message to the mainWindow using webContents
       {
-        // This is how we send the message to the mainWindow using webContents
+        label: 'Home',
+        accelerator: 'CmdOrCtrl+H',
+        click() {
+          mainWindow.webContents.send('show-todo')
+        }
+      },
+      {
         label: 'Settings',
+        accelerator: 'CmdOrCtrl+S',
         click() {
           mainWindow.webContents.send('show-settings')
         }
-      }
+      },
+      isMac ? { role: 'close' } : { role: 'quit' },
     ]
   },
   // { role: 'editMenu' }

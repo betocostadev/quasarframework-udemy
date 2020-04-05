@@ -20,7 +20,8 @@
     "devtron": "^1.4.0",
     "electron": "^8.2.0",
     "electron-debug": "^3.0.1",
-    "electron-devtools-installer": "^2.2.4"
+    "electron-devtools-installer": "^2.2.4",
+    "electron-packager": "^14.2.1"
   },
   "engines": {
     "node": ">= 10.18.1",

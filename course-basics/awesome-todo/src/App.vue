@@ -13,10 +13,16 @@ import { mapActions } from 'vuex'
       ...mapActions('auth', ['handleAuthStateChange'])
     },
     mounted() {
-      // Get the Electron IPC
-      require('electron').ipcRenderer.on('show-settings', () => {
-        this.$router.push('/settings')
-      })
+      // Use Quasar platform detection before using Electron actions
+      if(this.$q.platform.is.electron) {
+        // Get the Electron IPC
+        require('electron').ipcRenderer.on('show-settings', () => {
+          this.$router.push('/settings')
+        })
+        require('electron').ipcRenderer.on('show-todo', () => {
+          this.$router.push('/')
+        })
+      }
       this.getSettings()
       this.handleAuthStateChange()
     }

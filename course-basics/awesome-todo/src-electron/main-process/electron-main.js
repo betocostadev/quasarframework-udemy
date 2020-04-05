@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme, Menu } from 'electron'
+import { app, BrowserWindow, nativeTheme, ipcMain, Menu } from 'electron'
 import { menuTemplate } from './electron-main-menu-template'
 
 try {
@@ -65,6 +65,12 @@ app.on('window-all-closed', () => {
   // if (process.platform !== 'darwin') {
     app.quit()
   // }
+})
+
+/* IPC EVENTS: Using Electron IPC -> In this case, receiving commands from Vue to Electron */
+
+ipcMain.on('quit-app', () => {
+  app.quit()
 })
 
 // Not need to use the code below, since we are closing the App when the user closes the window.
