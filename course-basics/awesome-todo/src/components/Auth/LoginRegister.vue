@@ -14,6 +14,7 @@
         v-model="formData.email"
         :rules="[ val => isValidEmailAddress(val) || 'Please provide a valid e-mail address']"
         ref="email"
+        type="email"
         lazy-rules
         autofocus
         outlined
@@ -26,10 +27,10 @@
         v-model="formData.password"
         :rules="[ val => val.length >= 6 || 'Please use at least 6 characters']"
         ref="password"
+        type="password"
         lazy-rules
         outlined
         class="col"
-        type="password"
         :label="tab"
         stack-label />
     </div>

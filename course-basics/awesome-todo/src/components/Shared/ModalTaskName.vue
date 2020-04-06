@@ -7,9 +7,9 @@ $emit('update: name') was not working!!!
 Also, notice that v-select-all is a directive and inside the directives, it becomes camel case-->
     <div class="row">
       <q-input
-        autofocus
         outlined
         clearable
+        v-autofocus="{ delayCordova: 700 }"
         v-select-all
         :value="name"
         @input="$emit('update:name', $event)"
@@ -22,11 +22,13 @@ Also, notice that v-select-all is a directive and inside the directives, it beco
 
 <script>
 import { selectAll } from '../../directives/directive-select-all'
+import { autofocus } from '../../directives/directive-autofocus'
 export default {
   props: [ 'name' ],
   directives: {
     // This directive will make the text in the name section be selected automatically if there is any text
-    selectAll
+    selectAll,
+    autofocus
   }
 }
 </script>

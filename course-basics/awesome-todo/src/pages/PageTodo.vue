@@ -100,8 +100,8 @@ export default {
 
 <style lang="stylus">
   .q-scroll-area-tasks
-    display: flex
-    flex-grow: 1
+    display flex
+    flex 1
 
   .electron
     .q-scroll-area-tasks
