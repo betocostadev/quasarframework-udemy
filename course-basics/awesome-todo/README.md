@@ -4,6 +4,8 @@ A Quasar Framework app
 
 Based on the [Quasar Framework Course](https://www.udemy.com/course/quasarframework/) by [Danny Connel](https://www.udemy.com/user/dannyconnell/) available at Udemy.
 
+Available for Cordova and Electron
+
 ## Install the dependencies
 ```bash
 npm install
